@@ -3,7 +3,7 @@ import re
 
 def prime_numbers(low, high):
     prime_list = []
-    if (type(low) == int or type(low) == float) and (type(high) == int or type(high) == float) and low >= 2 and high >= low:
+    if (type(low) == int or type(low) == float) and (type(high) == int or type(high) == float) and high >= low:
         seive = [i for i in range(int(high) + 1)]
         i = 2
         seive[1] = 0
@@ -35,25 +35,31 @@ def text_stat(filename):
     d['paragraph_amount'] = len(text)
     d['bilingual_word_amount'] = 0
     words = 0
+    letters = 0
+    letters_in_word = []
     for paragraph in text:
         for word in paragraph:
             if word == '–':
                 continue
             words += 1
-            next_word = True
+            letters_in_word.clear()
             if bool(re.search('[a-zA-Z]', word)) and bool(re.search('[а-яА-Я]', word)):
                 d['bilingual_word_amount'] += 1
             for letter in word:
                 if letter.isalpha():
+                    letters += 1
                     if letter not in d:
                         d[letter] = (1, 1)
-                        next_word = False
-                    elif next_word:
+                        letters_in_word.append(letter)
+                    elif letter not in letters_in_word:
                         d[letter] = (d.get(letter)[0] + 1, d.get(letter)[1] + 1)
-                        next_word = False
+                        letters_in_word.append(letter)
                     else:
                         d[letter] = (d.get(letter)[0] + 1, d.get(letter)[1])
     d['word_amount'] = words
+    for key in d.keys():
+        if len(key) == 1:
+            d[key] = (float(d.get(key)[0]/letters), float(d.get(key)[1]/words))
     return d
 
 

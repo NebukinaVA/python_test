@@ -11,6 +11,9 @@ class MyTestCase(unittest.TestCase):
     def test_prime_numbers_float_range(self):
         self.assertEqual(4, len(task.prime_numbers(3.5, 15.6)))
 
+    def test_prime_numbers_negative_range(self):
+        self.assertEqual([2, 3, 5, 7, 11, 13], task.prime_numbers(-3.5, 15.6))
+
     def test_prime_numbers_correct_input_empty_result(self):
         self.assertEqual(0, len(task.prime_numbers(3.5, 3.6)))
 
@@ -41,8 +44,14 @@ class MyTestCase(unittest.TestCase):
     def test_text_stat_bilingual_word_amount_testfile(self):
         self.assertEqual(3, task.text_stat('testfile.txt').get('bilingual_word_amount'))
 
-    def test_text_stat_letter_amount_testfile(self):
-        self.assertEqual((4, 2), task.text_stat('testfile.txt').get('a'))
+    def test_text_stat_letter_a_amount_testfile(self):
+        self.assertEqual((0.2, 0.4), task.text_stat('testfile.txt').get('a'))
+
+    def test_text_stat_letter_g_amount_testfile(self):
+        self.assertEqual((0.2, 0.6), task.text_stat('testfile.txt').get('g'))
+
+    def test_text_stat_letter_l_amount_testfile(self):
+        self.assertEqual((0.1, 0.2), task.text_stat('testfile.txt').get('l'))
 
     def test_roman_numerals_to_int_if_not_a_string(self):
         self.assertIsNone(task.roman_numerals_to_int(42))
